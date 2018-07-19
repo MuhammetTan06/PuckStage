@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<DG>
+	<node type="package" id="0" name="test"/>
+	<node type="enum" id="1" name="Couleur"/>
+	<node type="class" id="2" name="A"/>
+	<node type="class" id="3" name="t"/>
+	<node type="package" id="5" name="lang"/>
+	<node type="attribute" id="6" name="couleurs"/>
+	<node type="package" id="8" name="util"/>
+	<node type="attribute" id="9" name="r"/>
+	<node type="method" id="10" name="Couleur)"/>
+	<node type="parameter" id="11" name="c"/>
+	<node type="methodbody" id="12" name="body"/>
+	<edge type="uses" src="3" dest="3" id="2" violation="0"/>
+	<edge type="contains" src="0" dest="1" id="3" violation="0"/>
+	<edge type="contains" src="2" dest="3" id="5" violation="0"/>
+	<edge type="contains" src="10" dest="11" id="7" violation="0"/>
+	<edge type="contains" src="0" dest="2" id="8" violation="0"/>
+	<edge type="contains" src="10" dest="12" id="9" violation="0"/>
+	<edge type="contains" src="2" dest="6" id="10" violation="0"/>
+	<edge type="contains" src="2" dest="9" id="11" violation="0"/>
+	<edge type="contains" src="2" dest="10" id="12" violation="0"/>
+	<edge type="uses" src="11" dest="1" id="13" violation="0"/>
+	<edge type="uses" src="10" dest="1" id="14" violation="0"/>
+	<edge type="uses" src="9" dest="1" id="15" violation="0"/>
+	<edge type="uses" src="6" dest="1" id="16" violation="0"/>
+	<edge type="uses" src="12" dest="9" id="17" violation="0"/>
+</DG>

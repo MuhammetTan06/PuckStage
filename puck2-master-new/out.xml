@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<DG>
+	<node type="package" id="0" name="toto"/>
+	<node type="class" id="1" name="Couleur"/>
+	<node type="class" id="2" name="B"/>
+	<node type="attribute" id="3" name="couleurs"/>
+	<node type="package" id="5" name="util"/>
+	<node type="attribute" id="6" name="r"/>
+	<node type="method" id="7" name="mom()"/>
+	<node type="methodbody" id="8" name="body"/>
+	<node type="class" id="12" name="Fr"/>
+	<node type="attribute" id="13" name="fromage"/>
+	<node type="method" id="14" name="Couleur)"/>
+	<node type="parameter" id="15" name="c"/>
+	<node type="methodbody" id="16" name="body"/>
+	<edge type="contains" src="0" dest="1" id="1" violation="0"/>
+	<edge type="contains" src="2" dest="3" id="2" violation="0"/>
+	<edge type="contains" src="7" dest="8" id="4" violation="0"/>
+	<edge type="contains" src="12" dest="13" id="5" violation="0"/>
+	<edge type="contains" src="14" dest="15" id="6" violation="0"/>
+	<edge type="contains" src="0" dest="2" id="7" violation="0"/>
+	<edge type="contains" src="12" dest="14" id="9" violation="0"/>
+	<edge type="contains" src="14" dest="16" id="10" violation="0"/>
+	<edge type="contains" src="2" dest="6" id="12" violation="0"/>
+	<edge type="uses" src="8" dest="12" id="13" violation="0"/>
+	<edge type="contains" src="2" dest="7" id="14" violation="0"/>
+	<edge type="uses" src="8" dest="13" id="15" violation="0"/>
+	<edge type="contains" src="0" dest="12" id="16" violation="0"/>
+	<edge type="uses" src="15" dest="1" id="17" violation="0"/>
+	<edge type="uses" src="8" dest="1" id="18" violation="0"/>
+	<edge type="uses" src="6" dest="1" id="19" violation="0"/>
+	<edge type="uses" src="3" dest="1" id="20" violation="0"/>
+</DG>

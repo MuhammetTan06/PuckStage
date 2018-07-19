@@ -1,0 +1,146 @@
+<project basedir="." default="build" name="upmc-pstl" xmlns:jacoco="antlib:org.jacoco.ant">
+
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="./lib/jacocoant.jar"/>
+    </taskdef>
+
+
+
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../../Volumes/Eclipse/Eclipse.app/Contents/Eclipse/"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="bin"/>
+    <property name="tests.dir" location="test"/>
+    <property name="build.classes.dir" location="${build.dir}/classes"/>
+    <property name="test.classes.dir" location="${build.dir}/test-classes"/>
+    <property name="reports.dir" location="reports"/>
+    <property name="reports.data.dir" location="reports/xml"/>
+    <property name="reports.html.dir" location="reports/html"/>
+    <property name="reports.javadoc" location="reports/javadoc"/>
+
+
+    <!-- This initialises the classpath of project -->
+    <path id="upmc-pstl.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/testng-6.14.3.jar"/>
+        <pathelement location="lib/jcommander-1.72.jar"/>
+        <pathelement location="lib/bsh-2.0b6.jar"/>
+        <pathelement location="${test.classes.dir}"/>
+        <pathelement location="lib/junit.jar"/>
+        <pathelement location="lib/org.apiguardian_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+        <pathelement location="lib/org.junit.jupiter.api_5.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.jupiter.engine_5.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.jupiter.migrationsupport_5.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.jupiter.params_5.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.platform.commons_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.platform.engine_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.platform.launcher_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.platform.runner_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.platform.suite.api_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.junit.vintage.engine_4.12.0.v20170910-2246.jar"/>
+        <pathelement location="lib/org.opentest4j_1.0.0.v20170910-2246.jar"/>
+        <pathelement location="lib/piccolo2d-core-3.1-SNAPSHOT.jar"/>
+        <pathelement location="lib/piccolo2d-extras-3.1-SNAPSHOT.jar"/>
+        <pathelement location="lib/piccolo2d-swt-3.1-SNAPSHOT.jar"/>
+        <pathelement location="ant-junitlauncher-1.10.3.jar"/>
+        <pathelement location="ant-launcher-1.10.3.jar"/>
+        <pathelement location="opentest4j-1.0.0.jar"/>
+    </path>
+
+    <path id="test.classpath">
+        <pathelement location="lib/testng-6.14.3.jar"/>
+        <pathelement location="lib/jcommander-1.72.jar"/>
+        <pathelement location="lib/bsh-2.0b6.jar"/>
+        <pathelement location="${test.classes.dir}"/>
+        <path refid="upmc-pstl.classpath"/>
+    </path>
+
+    <taskdef name="testng" classpathref="test.classpath"
+             classname="org.testng.TestNGAntTask" />
+
+    <!-- Target init creates the bin directory and copy all elements from src to bin except .java files -->
+    <target name="init" depends="clean">
+        <mkdir dir="bin"/>
+        <mkdir dir="bin/test-classes"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <!-- clean target removes bin directory -->
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <!-- The build target compile all .java files -->
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac encoding="iso-8859-1" debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="upmc-pstl.classpath"/>
+        </javac>
+    </target>
+
+    <!-- Target admin builds project if it was not and launches the admin interface of the project -->
+    <target name="admin" depends="build">
+            <java classname="com.puck.utilities.javafx.GenrationToDisplayMain" failonerror="true" fork="yes">
+                    <classpath refid="upmc-pstl.classpath"/>
+            </java>
+    </target>
+
+    <!-- Target base builds the project if it was not and launches the ui for dependecy graph from sample xml file -->
+    <target name="base" depends="build">
+        <java classname="com.puck.display.piccolo2d.NewDisplayDG" failonerror="true" fork="yes">
+            <classpath refid="upmc-pstl.classpath"/>
+        </java>
+    </target>
+
+    <target name="build_tests" depends="build">
+        <javac encoding="iso-8859-1" debug="true" debuglevel="${debuglevel}" destdir="${test.classes.dir}" includeantruntime="false" source="${source}" target="${target}">
+            <src path="test"/>
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run_all_tests" depends="build_tests">
+        <testng classpathref="test.classpath" haltonfailure="true">
+            <classfileset dir="${test.classes.dir}" includes="**/*.class"/>
+        </testng>
+    </target>
+
+    <target name="run_all_test_with_coverage" depends="build_tests">
+        <jacoco:coverage destFile="jcoco.exec" append="true">
+            <testng classpathref="test.classpath">
+                <classfileset dir="${test.classes.dir}" includes="**/*.class"/>
+            </testng>
+        </jacoco:coverage>
+    </target>
+	
+	<target name="code_coverage" depends="run_all_test_with_coverage">
+		<jacoco:report>
+		    <executiondata>
+		        <file file="jacoco.exec"/>
+		    </executiondata>
+		                        
+		    <structure name="PSTL-UPMC">
+		        <classfiles>
+		            <fileset dir="out/production"/>
+		        </classfiles>
+		        <sourcefiles encoding="iso-8859-1">
+		            <fileset dir="test"/>
+		        </sourcefiles>
+		    </structure>
+		                        
+		    <xml destfile="coverage.xml"/>
+		                        
+		</jacoco:report>
+	</target>
+
+
+
+</project>

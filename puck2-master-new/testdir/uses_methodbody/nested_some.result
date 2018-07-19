@@ -1,0 +1,5 @@
+<Edge from="Cycle.process().body" to="Chasse.chasser()" type="uses"/>
+<Edge from="Cycle.process().body" to="Mange.manger()" type="uses"/>
+<Edge from="Cycle.process().body" to="Selles.seLacher(Papier)" type="uses"/>
+<Edge from="Cycle.process().body" to="Papier" type="uses"/>
+<Edge from="Cycle.process().body" to="Lotus" type="uses"/>
