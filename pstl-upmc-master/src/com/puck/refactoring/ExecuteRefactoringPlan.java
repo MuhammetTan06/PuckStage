@@ -3,10 +3,12 @@ package com.puck.refactoring;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JFrame;
 
 import org.piccolo2d.extras.pswing.PSwingCanvas;
 
 import com.puck.arrows.ArrowNodesHolder;
+import com.puck.display.piccolo2d.NewDisplayDG;
 import com.puck.menu.Menu;
 import com.puck.menu.items.RenameNode;
 import com.puck.nodes.piccolo2d.Node;
@@ -15,11 +17,7 @@ import com.puck.nodes.piccolo2d.PiccoloCustomNode;
 public class ExecuteRefactoringPlan {
 
 	private String filePath = null;
-	private HashMap<String, PiccoloCustomNode> allPNodes;
-	private PSwingCanvas canvas;
-	private Menu menu;
-	private ArrowNodesHolder ANH;
-	private PiccoloCustomNode root;
+	NewDisplayDG frame;
 
 	private ExecuteRefactoringPlan() {
 		super();
@@ -31,13 +29,8 @@ public class ExecuteRefactoringPlan {
 		return INSTANCE;
 	}
 
-	public void init(HashMap<String, PiccoloCustomNode> allPNodes,ArrowNodesHolder ANH,PSwingCanvas canvas,PiccoloCustomNode root,
-			Map<String, Node> listNodes, Menu menu) {
-		this.allPNodes = allPNodes;
-		this.canvas = canvas;
-		this.menu = menu;
-		this.ANH = ANH;
-		this.root = root;
+	public void init(JFrame frame) {
+		this.frame = (NewDisplayDG)frame;
 	}
 	
 
@@ -55,8 +48,8 @@ public class ExecuteRefactoringPlan {
 			PlanReader reader = new PlanReader(filePath);
 			int nodeSize = reader.getNbNodesRename();
 			for (int i = 1; i <= nodeSize; i++) {
-				PiccoloCustomNode pnode = allPNodes.get(reader.getNodeId(i));
-				RenameNode renaming = new RenameNode(pnode, canvas, allPNodes, menu, ANH, null, null);
+				PiccoloCustomNode pnode = this.frame.getAllPNodes().get(reader.getNodeId(i));
+				RenameNode renaming = new RenameNode(pnode, this.frame, null);
 				renaming.rename(reader.getNodeNewName(i));
 				//pnode.getContent().rename(reader.getNodeNewName(i));
 				//pnode.setName(reader.getNodeNewName(i));

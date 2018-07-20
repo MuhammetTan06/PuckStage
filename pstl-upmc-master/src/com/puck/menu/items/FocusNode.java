@@ -8,32 +8,27 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 import org.piccolo2d.extras.pswing.PSwingCanvas;
 
 import com.puck.arrows.ArrowNodesHolder;
+import com.puck.display.piccolo2d.NewDisplayDG;
 import com.puck.menu.Menu;
 import com.puck.menu.items.removing.RemoveEdgesOf;
 import com.puck.nodes.piccolo2d.Node;
 import com.puck.nodes.piccolo2d.PiccoloCustomNode;
 
 public class FocusNode extends JMenuItem {
-	private HashMap<String, PiccoloCustomNode> allPNodes;
-	private Map<String, Node> listNodes ;
+	private NewDisplayDG frame;
 	private PiccoloCustomNode pnode;
-	private PSwingCanvas canvas;
-	private Menu menu;
-	private ArrowNodesHolder ANH;
-	public FocusNode(PiccoloCustomNode pnode, PSwingCanvas canvas, HashMap<String, PiccoloCustomNode> allPNodes,
-			Menu menu, ArrowNodesHolder ANH, Map<String, Node> listNodes) {
+	
+	public FocusNode(PiccoloCustomNode pnode, JFrame frame) {
 		super("Focus node ",new ImageIcon("images/hide.png"));
-		this.allPNodes = allPNodes;
+		this.frame = (NewDisplayDG)frame;
 		this.pnode = pnode;
-		this.canvas = canvas;
-		this.menu = menu;
-		this.ANH = ANH;
-		this.listNodes = listNodes;
+	
 		addActionListener();
 	}
 	public void focusNode(PiccoloCustomNode pnode, PSwingCanvas canvas) {
@@ -44,7 +39,7 @@ public class FocusNode extends JMenuItem {
 		for (PiccoloCustomNode child : parentChild) {
 			//faire direct child au lieu de hierarchy 
 			if (!child.equals(pnode)) {
-				RemoveEdgesOf removeEdges = new RemoveEdgesOf(child, canvas, allPNodes, menu, ANH, listNodes);
+				RemoveEdgesOf removeEdges = new RemoveEdgesOf(child, this.frame);
 				removeEdges.drawOutgoingdges(child,canvas);
 				pnode.getParentNode().getHiddenchildren().add(child);
 				pnode.getParentNode().removeChild(child);
@@ -63,7 +58,7 @@ public class FocusNode extends JMenuItem {
 		this.addActionListener(new AbstractAction() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				focusNode(pnode, canvas);
+				focusNode(pnode, frame.getCanvas());
 			}
 		});
 	}

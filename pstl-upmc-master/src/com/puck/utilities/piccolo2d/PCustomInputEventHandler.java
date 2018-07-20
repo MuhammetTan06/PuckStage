@@ -72,20 +72,20 @@ public class PCustomInputEventHandler extends PBasicInputEventHandler {
 		this.frame = (NewDisplayDG)frame;
 		this.pnode = pnode;
 		this.createEdgesOf = new CreateEdgesOf(pnode, this.frame);
-		this.removeEdgesOf = new RemoveEdgesOf(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
+		this.removeEdgesOf = new RemoveEdgesOf(pnode, this.frame);
 		this.createEdgesBy = new CreateEdgesBy(pnode, this.frame);
 		this.createEgdesHierarchyBy = new CreateEgdesHierarchyBy(pnode, this.frame);
 		this.createEgdesHierarchyOf = new CreateEgdesHierarchyOf(pnode, this.frame);
 		
-		this.removesHierarchyEdgesOf = new RemovesHierarchyEdgesOf(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
-		this.hideNode = new HideNode(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
-		this.focusNode = new FocusNode(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
-		this.expandAll = new ExpandAll(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
-		this.collapseAll = new CollapseAll(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes());
+		this.removesHierarchyEdgesOf = new RemovesHierarchyEdgesOf(pnode, this.frame);
+		this.hideNode = new HideNode(pnode, this.frame);
+		this.focusNode = new FocusNode(pnode, this.frame);
+		this.expandAll = new ExpandAll(pnode, this.frame);
+		this.collapseAll = new CollapseAll(pnode, this.frame);
 		this.state = StateChanger.getInstance();
 		this.addClass = new AddNode(this.frame, pnode, NodeType.CLASS, state);
 		this.addPackage =  new AddNode(this.frame, pnode, NodeType.PACKAGE, state);
-		this.renameNode = new RenameNode(pnode, this.frame.getCanvas(), this.frame.getAllPNodes(), this.frame.getMenu(), this.frame.getANH(), this.frame.getListNodes(), this.state);
+		this.renameNode = new RenameNode(pnode, this.frame, state);
 		
 	}
 

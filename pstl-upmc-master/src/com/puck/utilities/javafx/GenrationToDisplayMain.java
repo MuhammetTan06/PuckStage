@@ -5,12 +5,19 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -686,14 +693,18 @@ public class GenrationToDisplayMain extends JFrame {
 	
 private void showForbiddenDependenciesFrame() {
 		
-	
+		GridBagConstraints c = new GridBagConstraints();
+		
         if(dependenciesVisualisationWindow == null) {
 	        dependenciesVisualisationWindow = new JFrame ();
-	        
+	        dependenciesVisualisationWindow.setMaximumSize(new Dimension(1000, 2000));
+//	        dependenciesVisualisationWindow.setPreferredSize(new Dimension(1000, 2000));
 	        dependenciesVisualisationWindow.setVisible(true);
-	        dependenciesVisualisationWindow.setSize(300, 400);
+	        dependenciesVisualisationWindow.setSize(600, 600);
 	        dependenciesVisualisationWindow.setLocation((dgFrame.getLocation().x + dgFrame.getWidth()) - dependenciesVisualisationWindow.getWidth(), dgFrame.getLocation().y);
 	        dependenciesVisualisationWindow.setAlwaysOnTop(true);
+	        dependenciesVisualisationWindow.setLayout(new GridBagLayout());
+	        dependenciesVisualisationWindow.setResizable(false);
         }
         else {
         	dependenciesVisualisationWindow.getContentPane().removeAll();
@@ -702,19 +713,16 @@ private void showForbiddenDependenciesFrame() {
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 	    Collection<Edge> forbEdges = ((NewDisplayDG) dgFrame).getForbiddenEdges();
 	        
-	        
-	        
-	        Vector<String> columnNames = new Vector<String>();
-	       
-	        
-	        columnNames.add("Type");
-	        columnNames.add("From");
-	        columnNames.add("To");
-	        columnNames.add("Zoom");
+        Vector<String> columnNames = new Vector<String>();
+        
+        columnNames.add("Type");
+        columnNames.add("From");
+        columnNames.add("To");
+        columnNames.add("ID");
         
         tableau.setModel(new DefaultTableModel(data, columnNames));
-        tableau.getColumn("Zoom").setCellRenderer(new ButtonRenderer());
-        tableau.getColumn("Zoom").setCellEditor(new ButtonEditor(new JCheckBox(), dgFrame));
+        tableau.getColumn("ID").setCellRenderer(new ButtonRenderer());
+        tableau.getColumn("ID").setCellEditor(new ButtonEditor(new JCheckBox(), dgFrame));
         
         for (Edge ed : forbEdges) {
 
@@ -730,11 +738,66 @@ private void showForbiddenDependenciesFrame() {
        
        
        tableau.setRowHeight(30);
+       int offsetX = 260;
+		
+		JButton showOnlyAllForbiddenDependenciesBtn = new JButton("show only all forbidden dependencies");
+		showOnlyAllForbiddenDependenciesBtn.setBounds(0, 0, 260, 40);
+//		showOnlyAllForbiddenDependenciesBtn.setPreferredSize(new Dimension(100, 40));
+		dependenciesVisualisationWindow.getContentPane().add(showOnlyAllForbiddenDependenciesBtn);
+    	
+    	showOnlyAllForbiddenDependenciesBtn.setVisible(true);
+    	showOnlyAllForbiddenDependenciesBtn.addActionListener(new ActionListener() {
+			
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					((NewDisplayDG)dgFrame).showOnlyAllForbiddenDependencies();				
+				}
+			});
+    	
+    	offsetX += 260;
+		JButton showAllDependencies = new JButton("show all dependencies");
+		showAllDependencies.setBounds(0, 0, 260, 40);
+//		showAllDependencies.setPreferredSize(new Dimension(100, 40));
+		dependenciesVisualisationWindow.add(showAllDependencies);
+    	
+    	showAllDependencies.setLocation((int)(dependenciesVisualisationWindow.getWidth()/3 + offsetX), (int)(dependenciesVisualisationWindow.getHeight()*2/100));
+    	showAllDependencies.setVisible(true);
+    	showAllDependencies.addActionListener(new ActionListener() {
+
+			
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					((NewDisplayDG)dgFrame).showAllDependencies();				
+				}
+			});
+    	c.fill = GridBagConstraints.HORIZONTAL;
+    	c.weightx = 0.5;
+    	c.gridx = 1;
+    	c.gridy = 0;
+    	dependenciesVisualisationWindow.getContentPane().add(showOnlyAllForbiddenDependenciesBtn, c);
+    	
+    	c.fill = GridBagConstraints.HORIZONTAL;
+    	c.weightx = 0.5;
+    	c.gridx = 2;
+    	c.gridy = 0;
+    	dependenciesVisualisationWindow.getContentPane().add(showAllDependencies,c);
        
        JScrollPane scrollpane = new JScrollPane(tableau);
-       dependenciesVisualisationWindow.add(scrollpane);
+       
+	   	c.fill = GridBagConstraints.HORIZONTAL;
+	   	c.ipady = 400;      //to make it stay visible when shrinking the frame size
+	   	c.weightx = 0.0;
+	   	c.gridwidth = 3;
+	   	c.gridx = 0;
+	   	c.gridy = 1;
+       dependenciesVisualisationWindow.add(scrollpane, c);
+       
        dependenciesVisualisationWindow.setSize(dependenciesVisualisationWindow.getWidth()+1, dependenciesVisualisationWindow.getHeight()+1);
-    }
+       dependenciesVisualisationWindow.setSize(dependenciesVisualisationWindow.getWidth()-1, dependenciesVisualisationWindow.getHeight()-1);
+//       dependenciesVisualisationWindow.pack();
+       dependenciesVisualisationWindow.setVisible(true);
+}
 	
 //	private void showForbiddenDependencies() {
 //		int offsetX = 50;

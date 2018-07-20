@@ -7,11 +7,13 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 import org.piccolo2d.extras.pswing.PSwingCanvas;
 
 import com.puck.arrows.ArrowNodesHolder;
+import com.puck.display.piccolo2d.NewDisplayDG;
 import com.puck.menu.Menu;
 import com.puck.menu.items.removing.RemovesHierarchyEdgesOf;
 import com.puck.nodes.piccolo2d.Node;
@@ -19,28 +21,20 @@ import com.puck.nodes.piccolo2d.PiccoloCustomNode;
 
 public class HideNode extends JMenuItem {
 	
-		private HashMap<String, PiccoloCustomNode> allPNodes;
-		private Map<String, Node> listNodes ;
+		private NewDisplayDG frame;
 		private PiccoloCustomNode pnode;
-		private PSwingCanvas canvas;
-		private Menu menu;
-		private ArrowNodesHolder ANH;
-		public HideNode(PiccoloCustomNode pnode, PSwingCanvas canvas, HashMap<String, PiccoloCustomNode> allPNodes,
-				Menu menu, ArrowNodesHolder ANH, Map<String, Node> listNodes) {
+		
+		public HideNode(PiccoloCustomNode pnode, JFrame frame) {
 			super("Hide node ",new ImageIcon("images/hide.png"));
-			this.allPNodes = allPNodes;
 			this.pnode = pnode;
-			this.canvas = canvas;
-			this.menu = menu;
-			this.ANH = ANH;
-			this.listNodes = listNodes;
+			this.frame = (NewDisplayDG)frame;
 			addActionListener();
 		}
 		public void hideNode(PiccoloCustomNode pnode, PSwingCanvas canvas) {
 			ArrayList<PiccoloCustomNode> fromAscendency = pnode.getAscendency();
 //			RemoveEdgesOf removeEdges = new RemoveEdgesOf(pnode, canvas, allPNodes, menu, ANH, listNodes);
 //			removeEdges.drawOutgoingdges(pnode,canvas);
-			RemovesHierarchyEdgesOf removeEdges = new RemovesHierarchyEdgesOf(pnode, canvas, allPNodes, menu, ANH, listNodes);
+			RemovesHierarchyEdgesOf removeEdges = new RemovesHierarchyEdgesOf(pnode, this.frame);
 			removeEdges.drawOutgoingdges(pnode,canvas);
 			PiccoloCustomNode parent = pnode.getParentNode();
 			parent.getHiddenchildren().add(pnode);
@@ -56,7 +50,7 @@ public class HideNode extends JMenuItem {
 
 				public void actionPerformed(ActionEvent arg0) {
 					System.out.println("je click");
-					hideNode(pnode, canvas);
+					hideNode(pnode, frame.getCanvas());
 				}
 			});
 		}

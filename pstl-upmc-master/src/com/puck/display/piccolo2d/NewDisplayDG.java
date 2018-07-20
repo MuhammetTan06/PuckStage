@@ -186,7 +186,7 @@ public class NewDisplayDG extends JFrame {
 		canvas.setAutoscrolls(false);
 		menu.addPopupMenuListener(mpp);
 		state2.init(this, RefactoringCommands.getInstance().getXmlString());
-		refactoringPlanExecutor.init(this.allPNodes, ANH, canvas,root,listNodes,menu);
+		refactoringPlanExecutor.init(this);
 	
 	}
 	
@@ -627,7 +627,7 @@ public class NewDisplayDG extends JFrame {
 		for (int i = 1; i < ids.length; i++) {
 			for(PiccoloCustomNode node : root.getHierarchy()) {
 				if (node.getidNode().equals(ids[i].trim())) {
-					RenameNode rename = new RenameNode(node, canvas, allPNodes, menu, ANH, listNodes, state);
+					RenameNode rename = new RenameNode(node, this, state);
 					rename.renameWithoutStateSaving(newName);
 				}
 			}
