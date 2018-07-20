@@ -389,7 +389,9 @@ public class GenrationToDisplayMain extends JFrame {
 					 System.out.println(!dependencyManagerFrame.isDisplayable());
 				}
 				else {
+					dependencyManagerFrame.setVisible(true);
 					dependencyManagerFrame.requestFocus();
+					dependencyManagerFrame.transferFocus();
 				}
 				
 			}

@@ -26,11 +26,17 @@ public class CollapseAll extends JMenuItem {
 		this.frame = (NewDisplayDG)frame;
 		this.pnode = pnode;
 		addActionListener();
+	
 	}
 	public void expandAll(PiccoloCustomNode pnode, PSwingCanvas canvas) {
 		pnode.collapseAll();
 		pnode.getHigherParent().setLayout();
 		this.frame.getANH().refreshAllArrows();
+		this.frame.getANH().hide_show_arrows(this.frame.getRoot());
+		for(PiccoloCustomNode child : this.frame.getRoot().getHierarchy())
+			this.frame.getANH().hide_show_arrows(child);
+		this.frame.drawForbiddenVirtualArrowCounters();
+		
 		
 	}
 	public void addActionListener() {

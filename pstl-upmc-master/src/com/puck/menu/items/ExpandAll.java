@@ -34,6 +34,7 @@ public class ExpandAll extends JMenuItem {
 		pnode.expandAll();
 		pnode.getHigherParent().setLayout();
 		frame.refreshDisplay();
+		pnode.getHigherParent().setLayout();
 
 	}
 	public void addActionListener() {

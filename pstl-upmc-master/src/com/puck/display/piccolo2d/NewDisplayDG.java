@@ -30,6 +30,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.piccolo2d.PNode;
+import org.piccolo2d.event.PMouseWheelZoomEventHandler;
 import org.piccolo2d.extras.pswing.PSwingCanvas;
 import org.piccolo2d.nodes.PPath;
 import org.piccolo2d.nodes.PText;
@@ -187,7 +188,10 @@ public class NewDisplayDG extends JFrame {
 		menu.addPopupMenuListener(mpp);
 		state2.init(this, RefactoringCommands.getInstance().getXmlString());
 		refactoringPlanExecutor.init(this);
-	
+		
+		PMouseWheelZoomEventHandler wheelZoomEvent = new PMouseWheelZoomEventHandler();
+		wheelZoomEvent.setScaleFactor(-0.1d);
+		getCanvas().addInputEventListener(wheelZoomEvent);
 	}
 	
 	private void readForbiddenEdges() {
@@ -566,6 +570,11 @@ public class NewDisplayDG extends JFrame {
 			}
 			if(ed.getType().equals("uses")) {
 				Parrow newP = new ParrowUses(fromNode, toNode, 10, fromNode, toNode, ed.getViolation(), Parrow.REAL_TYPE);
+				this.ANH.addArrow(newP);
+				this.ANH.getFocusedArrows().add(newP);
+			}
+			else {
+				Parrow newP = new ParrowExtends(fromNode, toNode, fromNode, toNode, ed.getViolation(), Parrow.REAL_TYPE);
 				this.ANH.addArrow(newP);
 				this.ANH.getFocusedArrows().add(newP);
 			}
